@@ -13,13 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('register', 'RegistrationController@store');
-Route::post('login', 'LoginController@store');
-
+Route::post('register', 'AuthenticationController@register');
+Route::post('login', 'AuthenticationController@login');
 
 // return list of countries and some information about every country
-Route::middleware('jwt.auth')->get('countries', function() {
-    $json = json_encode(file_get_contents("https://restcountries.eu/rest/v2/region/Africa"), true);
-    return response()->json($json);
-});
 
+Route::middleware('jwt.auth')->group(function (){
+    Route::get('countries', 'CountriesController@index');
+});
